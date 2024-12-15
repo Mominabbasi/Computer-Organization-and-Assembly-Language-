@@ -1,0 +1,37 @@
+EXPERIMENT 03
+TASK 01: Write a program to compare twon nimbers and output the larger number
+
+AREA Program, CODE, READONLY ; Define code section
+ENTRY                       ; Entry point for the program
+
+main
+    LDR R0, =15             ; Load the first number (15) into R0
+    LDR R1, =25             ; Load the second number (25) into R1
+
+    CMP R0, R1              ; Compare R0 and R1
+    MOVGT R2, R0            ; If R0 > R1, move R0 to R2
+    MOVLE R2, R1            ; If R0 <= R1, move R1 to R2
+
+    END                     ; End of the program
+
+TASK 02: Implement a conditional block using CMP, BEQ, BNE
+AREA Program, CODE, READONLY ; Define code section
+ENTRY                       ; Entry point for the program
+
+main
+    LDR R0, =10             ; Load the first number (10) into R0
+    LDR R1, =10             ; Load the second number (10) into R1
+    CMP R0, R1              ; Compare R0 and R1
+
+    BEQ equal               ; Branch to 'equal' if R0 == R1
+    BNE notequal            ; Branch to 'notequal' if R0 != R1
+
+equal
+    LDR R2, =1              ; If equal, load 1 into R2 (indicating equality)
+    B end                   ; Skip the 'notequal' block and end the program
+
+notequal
+    LDR R2, =0              ; If not equal, load 0 into R2 (indicating inequality)
+
+end
+    END                     ; End of the program
