@@ -1,0 +1,98 @@
+EXPERIMENT 04
+TASK 01: Write a program to calculate the sum of the first N natural numbers
+AREA Program, CODE, READONLY ; Define code section
+ENTRY                       ; Entry point for the program
+
+main
+    LDR R0, =10             ; Load N (10) into R0
+    MOV R1, #0              ; Initialize R1 to 0 (sum)
+    MOV R2, #1              ; Initialize R2 to 1 (counter)
+
+loop
+    ADD R1, R1, R2          ; Add the counter (R2) to the sum (R1)
+    ADD R2, R2, #1          ; Increment the counter (R2)
+    CMP R2, R0              ; Compare counter with N
+    BLE loop                ; If counter <= N, repeat loop
+
+    END                     ; End of the program
+
+TASK 02: Implement a multiplication operation using iterative addition
+AREA Program, CODE, READONLY ; Define code section
+ENTRY                       ; Entry point for the program
+
+main
+    LDR R0, =5              ; Load the first number (multiplicand) into R0
+    LDR R1, =4              ; Load the second number (multiplier) into R1
+    MOV R2, #0              ; Initialize R2 to 0 (result)
+    MOV R3, #0              ; Initialize R3 to 0 (counter)
+
+loop
+    ADD R2, R2, R0          ; Add R0 (multiplicand) to R2 (result)
+    ADD R3, R3, #1          ; Increment the counter
+    CMP R3, R1              ; Compare counter with the multiplier
+    BLT loop                ; If counter < multiplier, repeat loop
+
+    END                     ; End of the program
+
+EXPERIMENT 05
+TASK 01: Write a program to find the maximum value in an array
+AREA Program, CODE, READONLY ; Define code section
+ENTRY                       ; Entry point for the program
+
+main
+    LDR R0, =array          ; Load the base address of the array into R0
+    LDR R1, =5              ; Load the size of the array (number of elements) into R1
+    LDR R2, [R0]            ; Load the first element of the array into R2 (current max)
+    ADD R0, R0, #4          ; Point to the second element in the array
+
+loop
+    LDR R3, [R0], #4        ; Load the current element into R3 and increment R0
+    CMP R3, R2              ; Compare the current element with the current max
+    MOVGT R2, R3            ; If the current element is greater, update the max
+    SUBS R1, R1, #1         ; Decrement the array size counter
+    BNE loop                ; If there are more elements, repeat the loop
+
+    END                     ; End of the program
+
+array
+    DCD 12, 45, 7, 89, 34   ; Define the array with elements
+
+TASK 02: Sort an array using the bubble sort algorithm
+AREA Program, CODE, READONLY ; Define code section
+ENTRY                       ; Entry point for the program
+
+main
+    LDR R0, =array          ; Load the base address of the array into R0
+    LDR R1, =5              ; Load the size of the array into R1
+
+outer_loop
+    SUB R2, R1, #1          ; Set the limit for the inner loop (size - 1)
+    MOV R3, #0              ; Initialize the swapped flag
+
+inner_loop
+    LDR R4, [R0]            ; Load the current element into R4
+    LDR R5, [R0, #4]        ; Load the next element into R5
+    CMP R4, R5              ; Compare the current and next elements
+    BLE skip_swap           ; If current <= next, skip swapping
+
+    STR R5, [R0]            ; Swap the elements
+    STR R4, [R0, #4]
+    MOV R3, #1              ; Set the swapped flag
+
+skip_swap
+    ADD R0, R0, #4          ; Move to the next pair of elements
+    SUBS R2, R2, #1         ; Decrement the inner loop counter
+    BNE inner_loop          ; If inner loop is not finished, repeat
+
+    CMP R3, #0              ; Check if any swapping occurred
+    BEQ end                 ; If no swaps, the array is sorted
+
+    SUB R0, R0, R1, LSL #2  ; Reset the pointer to the start of the array
+    SUBS R1, R1, #1         ; Decrement the size counter
+    BNE outer_loop          ; Repeat the outer loop if needed
+
+end
+    END                     ; End of the program
+
+array
+    DCD 34, 12, 89, 7, 45   ; Define the array with elements
